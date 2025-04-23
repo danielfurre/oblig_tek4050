@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 st.title("Simulering av Gauss-Markov prosess")
 
@@ -26,12 +26,14 @@ for k in range(1, num_steps):
     v_k = np.random.normal(0, np.sqrt(q))
     x[k] = phi * x[k - 1] + v_k
 
-# Plot simuleringen
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(time, x, label="Gauss-Markov prosess")
-ax.set_xlabel("Tid (s)")
-ax.set_ylabel("x")
-ax.set_title("Simulering av diskret Gauss-Markov prosess")
-ax.grid(True)
-ax.legend()
-st.pyplot(fig)
+# Plot med plotly
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=time, y=x, mode='lines', name='Gauss-Markov prosess'))
+fig.update_layout(
+    title='Simulering av diskret Gauss-Markov prosess',
+    xaxis_title='Tid (s)',
+    yaxis_title='x',
+    template='plotly_white',
+    height=400
+)
+st.plotly_chart(fig, use_container_width=True)
